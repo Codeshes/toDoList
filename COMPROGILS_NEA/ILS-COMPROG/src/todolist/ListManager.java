@@ -4,12 +4,12 @@ import java.util.Scanner;
 import java.util.LinkedList;
 
 public class ListManager {
-    private LinkedList<List> listManager = new LinkedList<>();
-    private Scanner sc = new Scanner(System.in);
-    private final String FILE_PATH = "Notepad/list.txt";
-    
+    private final LinkedList<List> listManager = new LinkedList<>();
+    private final Scanner sc = new Scanner(System.in);
+    private final String FILE_PATH = new File("list.txt").getAbsolutePath();
+
     public void toFileFormat() {
-    	loadFromFile();
+        loadFromFile();
     }
 
     public void addList(String toDoList) {
@@ -72,10 +72,16 @@ public class ListManager {
     }
 
     public void saveToFile() {
-        File file = new File(FILE_PATH);
-        File parent = file.getParentFile();
-        if (parent != null && !parent.exists()) parent.mkdir();
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+        String filePath = "Notepad\\" + FILE_PATH;
+        File parent = new File(filePath);
+        File parentDir = parent.getParentFile();
+        if (parentDir != null && !parentDir.exists()) {
+            if (!parent.mkdir()) {
+                System.err.println("Error creating Directory: " + parent.getAbsolutePath());
+                return;
+            }
+        }
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(parent))) {
             for (List list : listManager) {
                 writer.write(list.toFileFormat());
                 writer.newLine();
@@ -86,16 +92,22 @@ public class ListManager {
     }
 
     public void loadFromFile() {
-        File file = new File(FILE_PATH);
-        if (!file.exists()) return;
-        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+        try (BufferedReader dataReader = new BufferedReader(new FileReader("Notepad\\" + FILE_PATH))) {
             String line;
-            while ((line = reader.readLine()) != null) {
-                List list = List.fromFile(line);
-                listManager.add(list);
+            while ((line = dataReader.readLine()) != null) {
+                if (line.trim().isEmpty()) continue;
+                try {
+                    List list = List.fromFile(line);
+                    listManager.add(new List(list.getList()));
+                } catch (Exception e) {
+                    System.err.println("Skipping invalid item line during load: " + line + " Error: " + e.getMessage());
+                }
             }
+        } catch (FileNotFoundException e) {
+            System.out.println("Error loading items: File not found. Starting with empty inventory.");
         } catch (IOException e) {
-            System.out.println("Error loading: " + e.getMessage());
+            System.out.println("Error reading file during load: " + e.getMessage());
+
         }
     }
 }
