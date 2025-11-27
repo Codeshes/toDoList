@@ -1,0 +1,9 @@
+1|Wash mom's dishes
+2|Clean my room
+3|Finish my homework
+4|Review for tomorrow’s quiz
+5|Take out the trash
+6|Water the plants
+7|Organize my school bag
+8|Do 20 minutes of exercise
+9|Prepare clothes for tomorrow
