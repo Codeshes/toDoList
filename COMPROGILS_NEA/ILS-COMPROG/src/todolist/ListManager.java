@@ -1,10 +1,11 @@
 package todolist;
 import java.io.*;
-import java.util.LinkedList;
+import java.util.InputMismatchException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class ListManager {
-    private final LinkedList<List> listManager = new LinkedList<>();
+    private final ArrayList<List> listManager = new ArrayList<>();
     private final Scanner sc = new Scanner(System.in);
     private final String FILE_PATH = "Notepad/list.txt";
 
@@ -48,6 +49,7 @@ public class ListManager {
     }
 
     public void markTask() {
+    	try {
         viewList();
         if (listManager.isEmpty()) return;
         System.out.print("Enter a task ID to MARK DONE: ");
@@ -60,6 +62,10 @@ public class ListManager {
                 return;
             }
         System.out.println("Invalid Task ID");
+    	} catch (InputMismatchException e) {
+    		System.out.println("Invalid input");
+    		sc.nextLine();
+    	}
     }
 
     public void saveToFile() {

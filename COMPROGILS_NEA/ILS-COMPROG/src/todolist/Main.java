@@ -11,6 +11,7 @@ public class Main {
         int choice;
 
         do {
+        	try {
             System.out.println("""
 	                 ---------------------------------------
 	                         WELCOME USER!            
@@ -25,12 +26,13 @@ public class Main {
 	                         Enter your Choice.
 	                 ---------------------------------------
 	                 """);
-            try {
+            
                 choice = sc.nextInt();
                 sc.nextLine();
             } catch (InputMismatchException e) {
                 System.out.println("Choice must be a number");
-                return;
+                sc.nextLine();
+                continue;
             }
 
             switch (choice) {
@@ -41,14 +43,24 @@ public class Main {
                 }
                 case 2 -> manager.viewList();
                 case 3 -> {
+                	try {
                     System.out.print("Enter ID: ");
                     int id = sc.nextInt();
                     manager.accessToDoListById(id);
+                	} catch (InputMismatchException e) {
+                		System.out.println("Invalid input");
+                		sc.nextLine();
+                	}
                 }
                 case 4 -> {
+                	try {
                     System.out.print("Enter ID to delete: ");
                     int id = sc.nextInt();
                     manager.deleteListById(id);
+                	} catch (InputMismatchException e) {
+                		System.out.println("Invalid input");
+                		sc.nextLine();
+                	}
                 }
                 case 5 -> manager.markTask();
                 case 6 -> {
@@ -57,5 +69,7 @@ public class Main {
                 }
             }
         } while (true);
+        
     }
+    
 }
