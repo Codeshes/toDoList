@@ -2,7 +2,7 @@
 2|Clean my room
 3|Finish my homework
 4|Review for tomorrow’s quiz
-5|Take out the trash
+5|Take out the trash - ✔ DONE
 6|Water the plants
 7|Organize my school bag
 8|Do 20 minutes of exercise
